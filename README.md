@@ -7,6 +7,8 @@ Simple React shared state hook based on useState
 - [Installation](#installation)
 - [Basic usage](#basic-usage)
 - [Example application setup](#example-application-setup)
+- [Transforming data structures](#transforming-data-structures)
+- [Mixing local state with shared state](#mixing-local-state-with-shared-state)
 
 ## Installation
 
@@ -124,4 +126,75 @@ export function setUsername(username: string) {
 export function increaseCount() {
   setState({ count: getState().count + 1 });
 }
+```
+
+## Transforming data structures 
+
+When the selector function returns a new object, the component will re-render on each state update. To prevent this, split up into multiple hook calls or memoize state selections with something like [reselect](https://github.com/reduxjs/reselect).
+
+Renders on each state update:
+
+```tsx
+const Component = () => {
+  const myState = useAppState(o => ({ a: o.count, b: o.username, t: '...' })); 
+  return <div>..</div>
+};
+```
+
+Using multiple hook calls (and create objects outside of selectors):
+
+```tsx
+const Component = () => {
+  const a = useAppState(o => o.count);
+  const b = useAppState(o => o.username);
+  const myState = { a, b, t: '...' };
+  return <div>..</div>
+};
+```
+
+Using [reselect](https://github.com/reduxjs/reselect):
+
+```tsx
+const myStateSelector = createSelector<AppState>(
+  o => o.count,
+  o => o.username,
+  (a, b) => ({ a, b, t: '...' })
+);
+
+const Component = () => {
+  const myState = useAppState(myStateSelector);
+  return <div>..</div>
+};
+```
+
+Or wrap it in your own hook with another API. For example:
+
+```tsx
+const Component = () => {
+  const myState = useAppStateSelector(
+    o => o.count,
+    o => o.username,
+    (a, b) => ({ a, b, t: '...' })
+  );
+  return <div>..</div>;
+};
+```
+
+## Mixing local state with shared state
+
+```tsx
+const CountControl = () => {
+  const [ownCount, setOwnCount] = useState(0);
+  const countText = useAppState(o => `Count: ${o.count} (current ownCount: ${ownCount})`);
+  const ownCountText = `Own count: ${ownCount}`;
+  const actions = useActions();
+  return (
+    <div>
+      <p>{countText}</p>
+      <p>{ownCountText}</p>
+      <button onClick={() => actions.increaseCount()}>+1 shared</button>
+      <button onClick={() => setOwnCount(ownCount + 1)}>+1 own</button>
+    </div>
+  );
+};
 ```
