@@ -1,0 +1,41 @@
+{
+  "name": "react-shared-state-hook",
+  "version": "0.0.1",
+  "description": "Simple React shared state hook based on useState",
+  "main": "index.js",
+  "devDependencies": {
+    "@types/react": "16.9.22",
+    "prettier": "1.19.1",
+    "react": "16.12.0",
+    "typescript": "3.8.2"
+  },
+  "peerDependencies": {
+    "react": "^16.12.0"
+  },
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -f index.js* index.d.ts*",
+    "prettier": "prettier \"**/*.+(ts|js)\" --write",
+    "prepublishOnly": "npm run clean && npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/marcelbeumer/react-shared-state-hook.git"
+  },
+  "author": "Marcel Beumer <marcel@marcelbeumer.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/marcelbeumer/react-shared-state-hook/issues"
+  },
+  "homepage": "https://github.com/marcelbeumer/react-shared-state-hook#readme",
+  "keywords": [
+    "state",
+    "shared",
+    "global",
+    "react",
+    "hook",
+    "minimal",
+    "small",
+    "simple"
+  ]
+}
