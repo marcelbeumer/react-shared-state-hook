@@ -1,5 +1,3 @@
-# WIP: NOT PUBLISHED YET
-
 # react-shared-state-hook [![Build status](https://travis-ci.org/marcelbeumer/react-shared-state-hook.svg?branch=master)](https://travis-ci.org/marcelbeumer/react-shared-state-hook)
 
 Simple React shared state hook based on useState
@@ -130,7 +128,7 @@ export function increaseCount() {
 
 ## Transforming data structures 
 
-When the selector function returns a new object, the component will re-render on each state update. To prevent this, split up into multiple hook calls or memoize state selections with something like [reselect](https://github.com/reduxjs/reselect).
+When the selector function returns a new object, the component will re-render on every state update. To prevent this, either split up into multiple hook calls, pass an isEqual function or memoize state selections.
 
 Renders on each state update:
 
@@ -152,7 +150,18 @@ const Component = () => {
 };
 ```
 
-Using [reselect](https://github.com/reduxjs/reselect):
+Passing an isEqual function:
+
+```tsx
+import { shallowEqual } from 'other-npm-module';
+
+const Component = () => {
+  const myState = useAppState(o => ({ a: o.count, b: o.username, t: '...' }), shallowEqual); 
+  return <div>..</div>
+};
+```
+
+Or memoize selections using something like [reselect](https://github.com/reduxjs/reselect):
 
 ```tsx
 const myStateSelector = createSelector<AppState>(
@@ -164,19 +173,6 @@ const myStateSelector = createSelector<AppState>(
 const Component = () => {
   const myState = useAppState(myStateSelector);
   return <div>..</div>
-};
-```
-
-Or wrap it in your own hook with another API. For example:
-
-```tsx
-const Component = () => {
-  const myState = useAppStateSelector(
-    o => o.count,
-    o => o.username,
-    (a, b) => ({ a, b, t: '...' })
-  );
-  return <div>..</div>;
 };
 ```
 

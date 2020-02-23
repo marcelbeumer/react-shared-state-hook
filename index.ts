@@ -4,9 +4,13 @@ export interface Selector<T, P> {
   (state: T): P;
 }
 
+export interface IsEqualFn<P> {
+  (prev: P, next: P): boolean;
+}
+
 export interface SharedStateHook<T> {
   (): T;
-  <P>(fn?: Selector<T, P>): P;
+  <P>(fn: Selector<T, P>, isEqual?: IsEqualFn<P>): P;
 }
 
 export interface SharedStateSetter<T> {
@@ -19,23 +23,27 @@ export const createSharedStateHook = <T>(
   let state = initialState;
   let handlers: ((state: T) => void)[] = [];
 
-  const hook: SharedStateHook<T> = <P>(selectorFn?: Selector<T, P>) => {
+  const hook: SharedStateHook<T> = <P>(selectorFn?: Selector<T, P>, isEqualFn?: IsEqualFn<P>) => {
     const select = selectorFn !== undefined ? selectorFn : (o: T) => o;
     const [selection, setSelection] = useState(() => select(state));
     const selectionRef = useRef(selection);
     const selectorRef = useRef(select);
+    const isEqualRef = useRef(isEqualFn);
     selectorRef.current = select; // allow new selector fn on each render
+    isEqualRef.current = isEqualFn; // allow new isEqual fn on each render
 
     useEffect(() => {
       const handler = (newState: T) => {
-        const newSelection = selectorRef.current(newState);
-        // Workaround for what seems to be a React bug:
-        // When changing state for component A, components B+ will
-        // also re-render even though their state did not change.
-        // When changing component A again behavior is normal again.
-        if (selectionRef.current !== newSelection) {
-          selectionRef.current = newSelection;
-          setSelection(newSelection);
+        const nextSelection = selectorRef.current(newState);
+        const currentIsEqualFn = isEqualRef.current;
+        const previousSelection = selectionRef.current;
+        const isEqual =
+          currentIsEqualFn !== undefined
+            ? currentIsEqualFn(previousSelection as P, nextSelection as P)
+            : previousSelection === nextSelection;
+        if (!isEqual) {
+          selectionRef.current = nextSelection;
+          setSelection(nextSelection);
         }
       };
       handlers.push(handler);
