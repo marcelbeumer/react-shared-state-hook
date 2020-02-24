@@ -1,4 +1,5 @@
-# react-shared-state-hook [![Build status](https://travis-ci.org/marcelbeumer/react-shared-state-hook.svg?branch=master)](https://travis-ci.org/marcelbeumer/react-shared-state-hook)
+# react-shared-state-hook [![Build status](https://travis-ci.org/marcelbeumer/react-shared-state-hook.svg?branch=master)](https://travis-ci.org/marcelbeumer/react-shared-state-hook) [![NPM version](https://flat.badgen.net/npm/v/react-shared-state-hook/latest)](https://www.npmjs.com/package/react-shared-state-hook) [![Bundle size](https://badgen.net/bundlephobia/minzip/react-shared-state-hook)](https://bundlephobia.com/result?p=react-shared-state-hook)
+
 
 Simple React shared state hook based on useState
 
