@@ -1,6 +1,6 @@
 {
   "name": "react-shared-state-hook",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Simple React shared state hook based on useState",
   "main": "index.js",
   "devDependencies": {
