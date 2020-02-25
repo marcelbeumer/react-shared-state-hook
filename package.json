@@ -4,16 +4,24 @@
   "description": "Simple React shared state hook based on useState",
   "main": "index.js",
   "devDependencies": {
-    "@types/react": "16.9.22",
+    "@types/enzyme": "3.10.5",
+    "@types/enzyme-adapter-react-16": "1.0.6",
+    "enzyme": "3.11.0",
+    "enzyme-adapter-react-16": "1.15.2",
     "prettier": "1.19.1",
-    "react": "16.12.0",
-    "typescript": "3.8.2"
+    "react": "^16.12.0",
+    "tropic": "0.4.1",
+    "ts-node": "8.6.2",
+    "typescript": "3.8.2",
+    "react-dom": "16.12.0",
+    "@types/react": "16.9.22"
   },
   "peerDependencies": {
     "react": "^16.12.0"
   },
   "scripts": {
     "build": "tsc",
+    "test": "tropic --require=ts-node/register test/*.test.tsx",
     "clean": "rm -f index.js* index.d.ts*",
     "prettier": "prettier \"**/*.+(ts|js)\" --write",
     "prepublishOnly": "npm run clean && npm run build"
