@@ -6,22 +6,24 @@
   "devDependencies": {
     "@types/enzyme": "3.10.5",
     "@types/enzyme-adapter-react-16": "1.0.6",
+    "@types/react": "16.9.22",
     "enzyme": "3.11.0",
     "enzyme-adapter-react-16": "1.15.2",
+    "jsdom": "16.2.0",
+    "jsdom-global": "3.0.2",
     "prettier": "1.19.1",
     "react": "^16.12.0",
+    "react-dom": "16.12.0",
     "tropic": "0.4.1",
     "ts-node": "8.6.2",
-    "typescript": "3.8.2",
-    "react-dom": "16.12.0",
-    "@types/react": "16.9.22"
+    "typescript": "3.8.2"
   },
   "peerDependencies": {
     "react": "^16.12.0"
   },
   "scripts": {
     "build": "tsc",
-    "test": "tropic --require=ts-node/register test/*.test.tsx",
+    "test": "tropic --require=./test/setup test/*.test.tsx",
     "clean": "rm -f index.js* index.d.ts*",
     "prettier": "prettier \"**/*.+(ts|js)\" --write",
     "prepublishOnly": "npm run clean && npm run build"
