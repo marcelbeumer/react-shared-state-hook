@@ -17,7 +17,7 @@
     "prettier": "1.19.1",
     "react": "^16.12.0",
     "react-dom": "16.12.0",
-    "tropic": "0.4.1",
+    "tropic": "0.5.1",
     "typescript": "3.8.2"
   },
   "peerDependencies": {
